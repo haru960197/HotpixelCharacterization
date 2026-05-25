@@ -48,8 +48,8 @@ def _apply_style() -> None:
     """
     try:
         import scienceplots  # noqa: F401
-        plt.style.use(["science", "ieee"])
-        print("[INFO] SciencePlots (science + ieee) スタイルを適用しました。")
+        plt.style.use(["science", "ieee", "no-latex"])
+        print("[INFO] SciencePlots (science + ieee + no-latex) スタイルを適用しました。")
     except (ImportError, OSError):
         # SciencePlots がない場合のフォールバック
         plt.rcParams.update({
