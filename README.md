@@ -195,7 +195,7 @@ $$
 | 症状 | 対処 |
 |---|---|
 | `metavision_active_pixel_detection` が見つからない | Prophesee SDK (OpenEB) の PATH を確認: `source /opt/prophesee/setup.bash` 等 |
-| `result.txt` が生成されない | SDK のバージョンによりファイル出力パスが異なる。`-s` オプションでパスを明示指定 |
+| `active_pixel_calib.txt` が生成されない | SDK のバージョンによりファイル出力パスが異なる。正しいパスは `~/.local/share/metavision/hal/active_pixel_calib.txt`。`-s` オプションでパスを明示指定 |
 | グラフの文字が `□` になる | 日本語フォントが不足。`apt install fonts-noto-cjk` を実行 |
 | SciencePlots エラー | `pip install SciencePlots` を再実行、または LaTeX をインストール: `apt install texlive-latex-extra` |
 

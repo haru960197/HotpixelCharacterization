@@ -4,7 +4,7 @@
 #
 # 概要:
 #   metavision_active_pixel_detection コマンドを繰り返し起動し、
-#   出力される result.txt をタイムスタンプ付きでリネーム・保存する。
+#   出力される active_pixel_calib.txt をタイムスタンプ付きでリネーム・保存する。
 #   完全自動化は不可（GUI 上でスペースキー操作が必要）なため、
 #   ユーザーが GUI 操作を完了してコマンドが終了するたびに、
 #   次のループへ進む「半自動」方式を採用。
@@ -23,8 +23,8 @@ set -euo pipefail
 NUM_MEASUREMENTS=30           # 測定回数
 INTERVAL_SEC=30               # 測定間カウントダウン秒数 (0 = 手動エンター待ち)
 DATA_MODE="continuous"        # "continuous" or "reboot"
-SOURCE_DIR="${HOME}/.local/share/metavision"
-SOURCE_FILE="result.txt"
+SOURCE_DIR="${HOME}/.local/share/metavision/hal"
+SOURCE_FILE="active_pixel_calib.txt"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
@@ -41,7 +41,7 @@ OPTIONS:
   -n NUM    測定回数 (default: ${NUM_MEASUREMENTS})
   -i SEC    測定間カウントダウン秒数, 0=手動 (default: ${INTERVAL_SEC})
   -d MODE   データモード: continuous / reboot (default: ${DATA_MODE})
-  -s DIR    result.txt の検索元ディレクトリ (default: ${SOURCE_DIR})
+  -s DIR    active_pixel_calib.txt の検索元ディレクトリ (default: ${SOURCE_DIR})
   -h        このヘルプを表示
 
 EXAMPLES:
@@ -108,7 +108,7 @@ countdown() {
 }
 
 wait_for_result() {
-    # result.txt が存在するか確認 (最大60秒待機)
+    # active_pixel_calib.txt が存在するか確認 (最大60秒待機)
     local src="${SOURCE_DIR}/${SOURCE_FILE}"
     local waited=0
     while [ ! -f "$src" ] && [ "$waited" -lt 60 ]; do
@@ -147,7 +147,7 @@ echo ""
 for i in $(seq 1 "$NUM_MEASUREMENTS"); do
     echo "━━━ 測定 ${i}/${NUM_MEASUREMENTS} ━━━"
 
-    # --- 既存の result.txt を削除 (前回の残留を防止) ---
+    # --- 既存の active_pixel_calib.txt を削除 (前回の残留を防止) ---
     if [ -f "${SOURCE_DIR}/${SOURCE_FILE}" ]; then
         rm -f "${SOURCE_DIR}/${SOURCE_FILE}"
     fi
@@ -186,7 +186,7 @@ for i in $(seq 1 "$NUM_MEASUREMENTS"); do
         # ソースをクリーンアップ
         rm -f "${SOURCE_DIR}/${SOURCE_FILE}"
     else
-        echo "  ❌ result.txt の取得に失敗しました。この測定をスキップします。"
+        echo "  ❌ active_pixel_calib.txt の取得に失敗しました。この測定をスキップします。"
     fi
 
     echo ""
