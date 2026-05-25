@@ -39,11 +39,15 @@ for i in range(NUM_FILES):
     all_pixels = fixed_pixels | transient_sample
 
     with open(filename, "w") as f:
-        f.write("% Proprietary info or logs\n")
-        f.write(f"% Width: {SENSOR_W}, Height: {SENSOR_H}\n")
-        f.write(f"% Measurement index: {i}\n")
+        # % メタデータヘッダ（実際の active_pixel_calib.txt に準拠）
+        f.write(f"% active_pixels_count {len(all_pixels)}\n")
+        f.write(f"% active_pixels_percentage {len(all_pixels) / (SENSOR_W * SENSOR_H) * 100:.6f}\n")
+        f.write(f"% date 2026-05-25 {i * 30 // 3600:02d}:{(i * 30 % 3600) // 60:02d}:{i * 30 % 60:02d}\n")
+        f.write(f"% threshold 24.028604\n")
+        f.write(f"% end\n")
+        # データ行: "X Y" 形式（スペース区切り）
         for x, y in sorted(all_pixels):
-            f.write(f"{x}, {y}\n")
+            f.write(f"{x} {y}\n")
 
     print(f"  Generated: {filename.name}  ({len(all_pixels)} pixels)")
 

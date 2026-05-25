@@ -67,8 +67,18 @@ def load_hotpixel_file(filepath: str | Path) -> set[tuple[int, int]]:
     ファイル形式
     ----------
     - ``%`` で始まる行はコメント（メタデータ・ログ）としてスキップ。
-    - データ行は ``X, Y`` 形式（カンマ区切り、前後にスペース可）。
+    - データ行は ``X Y`` 形式（スペース区切り）。
+      例: ``33 0``, ``139 0``, ``245 1``
     - 空行はスキップ。
+
+    実際のファイル例 (active_pixel_calib.txt)::
+
+        % active_pixels_count 659
+        % date 2026-05-25 17:38:07
+        % end
+        33 0
+        139 0
+        245 1
 
     Parameters
     ----------
@@ -100,16 +110,16 @@ def load_hotpixel_file(filepath: str | Path) -> set[tuple[int, int]]:
             if not line or line.startswith("%"):
                 continue
 
-            # "X, Y" 形式をパース
-            parts = line.split(",")
+            # "X Y" 形式（スペース区切り）をパース
+            parts = line.split()
             if len(parts) != 2:
                 raise ValueError(
                     f"{filepath}:{line_no}: 座標を解析できません "
-                    f"(カンマ区切りの2値が必要): '{raw_line.rstrip()}'"
+                    f"(スペース区切りの2値が必要): '{raw_line.rstrip()}'"
                 )
             try:
-                x = int(parts[0].strip())
-                y = int(parts[1].strip())
+                x = int(parts[0])
+                y = int(parts[1])
             except ValueError as e:
                 raise ValueError(
                     f"{filepath}:{line_no}: 整数への変換に失敗: "
@@ -119,6 +129,7 @@ def load_hotpixel_file(filepath: str | Path) -> set[tuple[int, int]]:
             coords.add((x, y))
 
     return coords
+
 
 
 # ---------------------------------------------------------------------------
