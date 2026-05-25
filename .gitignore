@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+
+# Data files (Exclude actual experimental raw data from git)
+data/run_continuous/hp_*.txt
+data/run_reboot/hp_*.txt
+
+# OS
+.DS_Store
