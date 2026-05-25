@@ -44,13 +44,27 @@ hotpixel_characterization/
 
 ### インストール
 
+システムのPython環境の保護（PEP 668）により、直接 `pip install` を実行すると `externally-managed-environment` エラーが発生する場合があります。そのため、**仮想環境 (venv)** を作成してインストールすることを強く推奨します。
+
 ```bash
 cd hotpixel_characterization
+
+# 1. 仮想環境の作成
+python3 -m venv .venv
+
+# 2. 仮想環境の有効化（アクティベート）
+source .venv/bin/activate
+
+# 3. パッケージのインストール
 pip install -r requirements.txt
 ```
 
+> [!TIP]
+> 仮想環境を終了するには `deactivate` を実行します。再度スクリプトを実行する際は、事前に `source .venv/bin/activate` を実行してください。
+
 > [!NOTE]
 > `SciencePlots` は論文風のグラフスタイルを提供するオプション依存です。インストールに失敗しても解析・可視化は正常に動作します。LaTeX がインストールされていない環境では SciencePlots の一部スタイルが使えない場合があります。
+
 
 ---
 
